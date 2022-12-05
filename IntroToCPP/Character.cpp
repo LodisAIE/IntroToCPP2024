@@ -1,14 +1,23 @@
 #include "Character.h"
-#include <iostream>
-#include <string.h>
+#include "Item.h"
 
-Character::Character(const char name[], float health)
+Character::Character(const char* name, float health)
 {
-	strcpy_s(m_name, 8, name);
+	m_name = name;
 	m_health = health;
 	m_damage = 10.0f;
 	m_defense = 5.0f;
 	m_strength = 10.0f;
+	m_isAlive = true;
+	m_item = nullptr;
+}
+
+Character::~Character()
+{
+	if (m_item)
+	{
+		delete m_item;
+	}
 }
 
 float Character::getHealth()
@@ -31,16 +40,11 @@ float Character::getDefense()
 	return m_defense;
 }
 
-void Character::printName()
-{
-	std::cout << m_name;
-}
-
-float Character::attack(Character opponent)
+float Character::attack(Character* opponent)
 {
 	float totalDamage = getDamage() * m_strength;
 
-	opponent.takeDamage(totalDamage);
+	opponent->takeDamage(totalDamage);
 
 	return totalDamage;
 }

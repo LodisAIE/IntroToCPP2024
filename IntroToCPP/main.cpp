@@ -1,7 +1,9 @@
+
+#include "Player.h"
 #include <iostream>
-#include "Character.h"
 
 int currentScene = 0;
+Player* player;
 
 void printNum(int num)
 {
@@ -40,65 +42,29 @@ void setArray(int a[], int b[], int size)
 	}
 }
 
-/// <summary>
-/// Waits until a valid input is recieved after presenting a prompt.
-/// </summary>
-/// <param name="prompt">The description of the current question or situation.</param>
-/// <param name="option1">The name of the first option the user can choose.</param>
-/// <param name="option2">The name of the second option the user can choose.</param>
-/// <returns>The number of the choice the user picked.</returns>
-int getChoice(const char prompt[], const char option1[], const char option2[])
-{
-	int choice = 0;
-
-	//Loop until a valid input is recieved.
-	while (!choice)
-	{
-		//Updates the display to present the prompt and options.
-		std::cout << prompt << std::endl;
-		std::cout << "1." << option1 << std::endl;
-		std::cout << "2." << option2 << std::endl;
-
-		std::cin >> choice;
-
-		//If the choice isn't an option...
-		if (choice != 1 && choice != 2)
-		{
-			//...print an error message and reset the choice variable.
-			std::cout << "Invalid input. \n Please input key 1 or 2." << std::endl;
-			system("pause");
-
-			choice = 0;
-		}
-
-		//Clear the screen before displaying the options again.
-		system("cls");
-	}
-
-	return choice;
-}
-
 int main()
 {
-	Character fox = Character("C.Fox", 100);
+	Character* fox = new Character("Fox", 100);
 
+	//Displays start message.
 	std::cout << "Welcome traveler! \n" << "Please tell me your name" << std::endl;
 
-	char name[8];
+	//Initializes player using user input.
+	char name[9];
 	std::cin >> name;
+	player = new Player(name, 100);
 
-	Character player = Character(name, 100);
-
-	std::cout << "Hello ";
-	player.printName();
+	std::cout << "Hello " << player->getName();
 	std::cout << std::endl;
 
-	int choice = getChoice("You're walking past a fox in an alley. He's super cracked at fortnite my guy. \n He has a gun. What do you do?",
+	//Display first encounter.
+	int choice = player->getChoice("You're walking past a fox in an alley. He's super cracked at fortnite my guy. \n He has a gun. What do you do?",
 		"Use counter gun", "Talk it out");
-
+	//Print the a new statement based on the player's choice.
 	if (choice == 1)
 	{
-		float damage = fox.attack(player);
+		float damage = fox->attack(player);
+
 		std::cout << "Unfortunately you aren't quite as cracked my guy. You are shot and take " << damage << " damage." << std::endl;
 	}
 	else
@@ -106,7 +72,7 @@ int main()
 		std::cout << "You start talking and the fox slowly fades away. Your medication has just kicked in." << std::endl;
 	}
 
-	std::cout << player.getHealth();
+	std::cout << player->getHealth();
 
 	return 0;
 }

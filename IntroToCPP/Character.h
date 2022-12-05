@@ -1,17 +1,11 @@
 #pragma once
+class Item;
 
 class Character
 {
-private:
-	float m_health;
-	float m_strength;
-	float m_damage;
-	float m_defense;
-	bool m_isAlive;
-	char m_name[8];
-
 public:
-	Character(const char name[], float health);
+	Character(const char* name, float health);
+	~Character();
 
 	float getHealth();
 	float getStrength();
@@ -19,9 +13,21 @@ public:
 	float getDefense();
 	bool getIsAlive();
 
-	void printName();
+	const char* getName() { return m_name; }
 
-	float attack(Character opponent);
+	Item* getItem() { return m_item; };
+	void setItem(Item* item) { m_item = item; };
+
+	float attack(Character* opponent);
 	float takeDamage(float damage);
+
+private:
+	float m_health;
+	float m_strength;
+	float m_damage;
+	float m_defense;
+	bool m_isAlive;
+	const char* m_name;
+	Item* m_item;
 };
 
